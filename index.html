@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Radar de Reuniões - Analise reuniões com agilidade</title>
+    
+    <!-- Metadados adicionais -->
+    <meta name="description" content="Radar de Reuniões: Transcreva, registre e analise reuniões com agilidade. Ferramenta para gerar prompts e organizar informações de reuniões.">
+    <meta name="author" content="João Eymard">
+    <meta name="keywords" content="reuniões, transcrição, análise, prompts, GPT, produtividade">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Radar de Reuniões - Analise reuniões com agilidade">
+    <meta property="og:description" content="Ferramenta para transcrever, registrar e analisar reuniões com agilidade.">
+    <meta property="og:url" content="https://joaoeymard.github.io/radar-de-reunioes/">
+    <meta property="og:type" content="website">
+    <!-- <meta property="og:image" content="https://example.com/imagem-radar-reunioes.png"> -->
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Radar de Reuniões - Analise reuniões com agilidade">
+    <meta name="twitter:description" content="Transcreva, registre e analise reuniões com agilidade.">
+    <!-- <meta name="twitter:image" content="https://example.com/imagem-radar-reunioes.png"> -->
+    
+    <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <!-- HEADER -->
+  <header class="bg-dark text-white py-4 mb-4">
+    <div class="container text-center">
+      <h1 class="h3">Radar de Reuniões</h1>
+      <p class="mb-0">Transcreva, registre e analise reuniões com agilidade</p>
+    </div>
+  </header>
+
+  <div class="container mb-5">
+
+    <!-- APRESENTAÇÃO -->
+    <div class="card shadow p-4 mb-4">
+      <h2 class="mb-3">Como funciona o Radar de Reuniões?</h2>
+      <p>Este projeto foi criado para agilizar o processo de registro e análise de reuniões. Siga os 3 passos simples abaixo para transcrever o áudio, gerar um prompt estruturado e enviar para o agente GPT responsável pela análise automatizada:</p>
+      <ol>
+        <li>Transcrever o vídeo ou áudio da reunião.</li>
+        <li>Preencher um formulário com as informações relevantes.</li>
+        <li>Enviar os dados para o agente GPT.</li>
+      </ol>
+    </div>
+
+    <!-- SESSÃO 1 -->
+    <div class="card shadow p-4 mb-4">
+      <h2 class="mb-3">1. Transcrever vídeo da reunião</h2>
+      <p>Acesse o link abaixo para abrir o Colab do Google e transcrever o vídeo ou áudio da reunião para texto.</p>
+      <a href="https://colab.research.google.com/github/joaoeymard/transcrever-video-e-audio/blob/main/transcrever.ipynb" class="btn btn-outline-primary" target="_blank">Abrir Colab de Transcrição</a>
+      <p class="mt-3">Exemplo do ambiente:</p>
+      <img src="/mnt/data/de9ae750-2179-43a3-b88e-e4e832b9f355.png" alt="Print do Colab" class="img-fluid rounded border">
+    </div>
+
+    <!-- SESSÃO 2 -->
+    <div class="card shadow p-4 mb-4">
+      <h2 class="mb-3">2. Preencher Formulário</h2>
+      <p>Preencha os dados abaixo para gerar o prompt do agente.</p>
+
+      <div class="mb-3">
+        <label class="form-label">Tipo de Reunião</label>
+        <select id="tipo" class="form-select">
+          <option>Cliente</option>
+          <option>Interna (equipe)</option>
+          <option>Daily / Planning</option>
+          <option>Pessoal</option>
+          <option>Outro</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Data</label>
+        <input type="date" id="data" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Participantes</label>
+        <input type="text" id="participantes" class="form-control" placeholder="Ex: João, Lara, Ariane, Cliente XPTO">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Solicitações</label>
+        <div class="form-check">
+          <input type="checkbox" id="nota" class="form-check-input">
+          <label class="form-check-label" for="nota">Nota rápida para WhatsApp</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="sentimento" class="form-check-input">
+          <label class="form-check-label" for="sentimento">Análise do sentimento</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="ata" class="form-check-input">
+          <label class="form-check-label" for="ata">Ata formal da reunião</label>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Observações específicas (opcional)</label>
+        <textarea id="observacoes" class="form-control" rows="3" placeholder="Ex: Foco em detectar desconforto com prazos..."></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Conteúdo ou transcrição da reunião</label>
+        <textarea id="conteudo" class="form-control" rows="8" placeholder="Cole aqui a transcrição da reunião..."></textarea>
+      </div>
+
+      <button onclick="gerarPrompt()" class="btn btn-success w-100">Gerar Prompt do Agente</button>
+
+      <div class="mt-4">
+        <h4>🎯 Prompt Gerado:</h4>
+        <pre id="resultado" class="bg-light p-3 border rounded"></pre>
+      </div>
+    </div>
+
+    <!-- SESSÃO 3 -->
+    <div class="card shadow p-4 mb-5">
+      <h2 class="mb-3">3. Enviar para o Agente GPT</h2>
+      <p>Agora que você tem o prompt e a transcrição, abra o link abaixo e envie para o agente “Radar de Reuniões” para gerar os materiais desejados:</p>
+      <a href="https://chatgpt.com/g/g-6810f36ec72881919241c513351dea9a-radar-de-reunioes" class="btn btn-outline-dark" target="_blank">Abrir Agente GPT</a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white py-3">
+    <div class="container text-center">
+      <small>Radar de Reuniões © 2025 • Desenvolvido por João Eymard</small>
+    </div>
+  </footer>
+
+  <script src="libs/bootstrap/bootstrap.min.js"></script>
+
+  <script>
+    function gerarPrompt() {
+      const tipo = document.getElementById('tipo').value;
+      const data = document.getElementById('data').value;
+      const participantes = document.getElementById('participantes').value;
+      const nota = document.getElementById('nota').checked;
+      const sentimento = document.getElementById('sentimento').checked;
+      const ata = document.getElementById('ata').checked;
+      const observacoes = document.getElementById('observacoes').value.trim();
+      const conteudo = document.getElementById('conteudo').value.trim();
+
+      let prompt = `Tipo de reunião: ${tipo}\n`;
+      prompt += `Data e horário: ${data}\n`;
+      prompt += `Participantes: ${participantes}\n\n`;
+
+      prompt += `Solicitações:\n`;
+      if (nota) prompt += `- Nota rápida para WhatsApp\n`;
+      if (sentimento) prompt += `- Análise do sentimento dos participantes\n`;
+      if (ata) prompt += `- Ata formal da reunião\n`;
+
+      if (observacoes) {
+        prompt += `\nObservações específicas:\n${observacoes}\n`;
+      }
+
+      prompt += `\nConteúdo da reunião:\n${conteudo}`;
+
+      document.getElementById('resultado').textContent = prompt;
+    }
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6VBEMHTQ21"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-6VBEMHTQ21');
+  </script>
+
+</body>
+</html>
